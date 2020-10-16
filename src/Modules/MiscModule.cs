@@ -21,9 +21,9 @@ namespace crackdotnet.Modules
         public async Task Command_PingAsync()
         {
             var sw = Stopwatch.StartNew();
-            var initial = await Context.Channel.SendMessageAsync("Pinging...").ConfigureAwait(false);
+            var initial = await ReplyAsync("pingin...").ConfigureAwait(false);
             var restTime = sw.ElapsedMilliseconds.ToString();
-            await Context.Channel.SendMessageAsync(restTime + " ms");
+            await ReplyAsync(restTime + " ms");
         }
 
         [Group("set"), Name("user modification")]
