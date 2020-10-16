@@ -2,6 +2,7 @@
 using Discord.Commands;
 using Discord.WebSocket;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace crackdotnet.Modules
 {
@@ -13,7 +14,18 @@ namespace crackdotnet.Modules
         [RequireUserPermission(GuildPermission.Administrator)]
         public Task Say([Remainder]string text)
             => ReplyAsync(text);
-        
+
+        [Command("Ping")]
+        [Summary("Show the Gateway latency to Discord.")]
+        [Remarks("ping")]
+        public async Task Command_PingAsync()
+        {
+            var sw = Stopwatch.StartNew();
+            var initial = await Context.Channel.SendMessageAsync("Pinging...").ConfigureAwait(false);
+            var restTime = sw.ElapsedMilliseconds.ToString();
+            await Context.Channel.SendMessageAsync(restTime + " ms");
+        }
+
         [Group("set"), Name("user modification")]
         [RequireContext(ContextType.Guild)]
         public class Set : ModuleBase
@@ -32,6 +44,8 @@ namespace crackdotnet.Modules
                 await user.ModifyAsync(x => x.Nickname = name);
                 await ReplyAsync($"{user.Mention} i changed your name to **{name}**");
             }
+
+            
         }
     }
 }

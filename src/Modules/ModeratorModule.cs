@@ -18,5 +18,16 @@ namespace crackdotnet.Modules
             await ReplyAsync($"cya {user.Mention} :wave:");
             await user.KickAsync();
         }
+
+        [Command("ban")]
+        [Summary("ban someone of your choice")]
+        [Remarks("ban {Member}")]
+        [RequireUserPermission(GuildPermission.BanMembers)]
+        public async Task BanAsync([Remainder]SocketGuildUser user)
+        {
+            await ReplyAsync($"cya {user.Mention} :wave:");
+            await user.BanAsync(7);
+
+        }
     }
 }

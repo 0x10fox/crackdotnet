@@ -11,6 +11,8 @@ namespace crackdotnet
     public class Startup
     {
         public IConfigurationRoot Configuration { get; }
+        //public Task SetActivityAsync(IActivity activity);
+        //ill eventually add status when i figure out what im doing
 
         public Startup(string[] args)
         {
