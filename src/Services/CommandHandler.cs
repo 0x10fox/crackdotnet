@@ -3,6 +3,10 @@ using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 using System;
+using Newtonsoft.Json;
+using System.Text;
+using System.IO;
+using Newtonsoft.Json.Linq;
 
 namespace crackdotnet
 {
@@ -13,6 +17,9 @@ namespace crackdotnet
         private readonly CommandService _commandService;
         private readonly DiscordSocketClient _discord;
         private readonly IServiceProvider _serviceProvider;
+        private int shiftycoinCounter = 0;
+        static StringBuilder sb = new StringBuilder();
+        static StringWriter sw = new StringWriter(sb);
 
         public CommandHandler(
             //ILogger<CommandHandler> logger,
@@ -58,6 +65,40 @@ namespace crackdotnet
                             if (result.ErrorReason == "Unknown command.") await context.Channel.SendMessageAsync(result.ErrorReason + " Did you accidentally put an unnecessary space somewhere?");
                             else await context.Channel.SendMessageAsync(result.ErrorReason);
                             return;
+                    }
+                }
+            }
+            else if (msg.Author.Id != _discord.CurrentUser.Id)
+            {
+                var id = context.Message.Author.Id;
+                string scjson = System.IO.File.ReadAllText(@"C:\Users\sdani\OneDrive\Documents\crackdotnet\src\shiftycoins.json");
+                JObject parsed = JObject.Parse(scjson);
+                JObject users = (JObject)parsed["users"];
+                JObject totalareas = (JObject)parsed["totalareas"];
+                if (shiftycoinCounter < 100)
+                {
+                    shiftycoinCounter++;
+                    //Console.WriteLine("counter plus");
+                }
+                else
+                {
+                    shiftycoinCounter = 0;
+
+
+                    if (scjson.Contains(id.ToString()))
+                    {
+                        users[id.ToString()] = ((int)users[id.ToString()]) + 1;
+                        totalareas["totalcoin"] = ((int)totalareas["totalcoin"]) + 1;
+                        System.IO.File.WriteAllText(@"C:\Users\sdani\OneDrive\Documents\crackdotnet\src\shiftycoins.json", parsed.ToString());
+                        //Console.WriteLine("upped value of user " + id.ToString());
+
+                    }
+                    else
+                    {
+                        users.Property("start").AddAfterSelf(new JProperty(id.ToString(), 1));
+                        totalareas["totalcoin"] = ((int)totalareas["totalcoin"]) + 1;
+                        System.IO.File.WriteAllText(@"C:\Users\sdani\OneDrive\Documents\crackdotnet\src\shiftycoins.json", parsed.ToString());
+                        Console.WriteLine("new user added, " + id.ToString());
                     }
                 }
             }

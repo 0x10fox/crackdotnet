@@ -26,7 +26,7 @@ namespace crackdotnet.Modules
         public async Task BanAsync([Remainder]SocketGuildUser user)
         {
             await ReplyAsync($"cya {user.Mention} :wave:");
-            await user.BanAsync(7);
+            await user.BanAsync(0);
 
         }
     }
