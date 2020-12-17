@@ -177,7 +177,7 @@ namespace crackdotnet.Modules
                 string scjson = System.IO.File.ReadAllText(@"C:\Users\sdani\OneDrive\Documents\crackdotnet\src\shiftycoins.json");
                 JObject parsed = JObject.Parse(scjson);
                 JObject business = (JObject)parsed["business"];
-                await ReplyAsync("this business has " + business[a] + " shiftycoin");
+                await ReplyAsync("this business has " + (int)business[a.ToUpper()] + " shiftycoin");
             }
             [Command("withdraw")]
             [Summary("withdraw an amount from a business you own. must be registered as business owner.")]
