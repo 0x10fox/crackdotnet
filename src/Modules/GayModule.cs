@@ -110,5 +110,107 @@ namespace crackdotnet.Modules
                 await ReplyAsync("this person has " + users[a] + " shiftycoin");
             }
         }
+        [Group("business"), Name("business")]
+        public class business : ModuleBase
+        {
+            [Command("create")]
+            [Summary("create a business")]
+            public async Task Command_BusinessCreateAsync(string newid)
+            {
+                string id = Context.Message.Author.Id.ToString();
+                string bujson = System.IO.File.ReadAllText(@"C:\Users\sdani\OneDrive\Documents\crackdotnet\src\business.json");
+                JObject parsed = JObject.Parse(bujson);
+                JObject buid = (JObject)parsed["buid"];
+                string scjson = System.IO.File.ReadAllText(@"C:\Users\sdani\OneDrive\Documents\crackdotnet\src\shiftycoins.json");
+                JObject parsed1 = JObject.Parse(scjson);
+                JObject business = (JObject)parsed1["business"];
+                if (bujson.Contains(newid.ToUpper()))
+                {
+                    await ReplyAsync("the business " + newid.ToUpper() + " already exists.");
+
+                }
+                else
+                {
+                    buid.Property("start").AddAfterSelf(new JProperty(newid.ToUpper(), id));
+                    business.Property("start").AddAfterSelf(new JProperty(newid.ToUpper(), 0));
+                    System.IO.File.WriteAllText(@"C:\Users\sdani\OneDrive\Documents\crackdotnet\src\business.json", parsed.ToString());
+                    System.IO.File.WriteAllText(@"C:\Users\sdani\OneDrive\Documents\crackdotnet\src\shiftycoins.json", parsed1.ToString());
+                    await ReplyAsync("the business " + newid.ToUpper() + " has been created.");
+                    Console.WriteLine("new business added, " + newid.ToUpper());
+                }
+            }
+            [Command("pay")]
+            [Summary("add money to a business' balance")]
+            public async Task Command_BusinessPayAsync(string id2, int a)
+            {
+                string id1 = Context.Message.Author.Id.ToString();
+                string scjson = System.IO.File.ReadAllText(@"C:\Users\sdani\OneDrive\Documents\crackdotnet\src\shiftycoins.json");
+                JObject parsed = JObject.Parse(scjson);
+                JObject users = (JObject)parsed["users"];
+                JObject business = (JObject)parsed["business"];
+                if ((int)users[id1] >= a && a >= 0)
+                {
+                    
+                    if (!scjson.Contains(id2.ToUpper()))
+                    {
+                        await ReplyAsync("the business " + id2.ToUpper() + " does not exist.");
+                    }
+                    else
+                    {
+                        users[id1] = ((int)users[id1]) - a;
+                        business[id2.ToUpper()] = ((int)business[id2.ToUpper()]) + a;
+                        System.IO.File.WriteAllText(@"C:\Users\sdani\OneDrive\Documents\crackdotnet\src\shiftycoins.json", parsed.ToString());
+                        await ReplyAsync("you have paid " + id2.ToUpper() + " " + a + " shiftycoin.");
+                    }
+                    
+                }
+                else
+                {
+                    await ReplyAsync("you dont have enough coin");
+                }
+            }
+            [Command("balance")]
+            [Summary("show the balance of a given business")]
+            public async Task Command_BusinessAmountAsync(string a)
+            {
+                //string id = Context.Message.Author.Id.ToString();
+                string scjson = System.IO.File.ReadAllText(@"C:\Users\sdani\OneDrive\Documents\crackdotnet\src\shiftycoins.json");
+                JObject parsed = JObject.Parse(scjson);
+                JObject business = (JObject)parsed["business"];
+                await ReplyAsync("this business has " + business[a] + " shiftycoin");
+            }
+            [Command("withdraw")]
+            [Summary("withdraw an amount from a business you own. must be registered as business owner.")]
+            public async Task Command_BusinessWithdrawAsync(string busid, int a)
+            {
+                string id = Context.Message.Author.Id.ToString();
+                string bujson = System.IO.File.ReadAllText(@"C:\Users\sdani\OneDrive\Documents\crackdotnet\src\business.json");
+                JObject parsed = JObject.Parse(bujson);
+                JObject buid = (JObject)parsed["buid"];
+                string scjson = System.IO.File.ReadAllText(@"C:\Users\sdani\OneDrive\Documents\crackdotnet\src\shiftycoins.json");
+                JObject parsed1 = JObject.Parse(scjson);
+                JObject business = (JObject)parsed1["business"];
+                JObject users = (JObject)parsed1["users"];
+
+                if (id == ((string)buid[busid.ToUpper()]))
+                {
+                    if ((int)business[busid.ToUpper()] >= a && a >= 0)
+                    {
+                        users[id] = ((int)users[id]) + a;
+                        business[busid.ToUpper()] = ((int)business[busid.ToUpper()]) - a;
+                        System.IO.File.WriteAllText(@"C:\Users\sdani\OneDrive\Documents\crackdotnet\src\shiftycoins.json", parsed1.ToString());
+                        await ReplyAsync("you have withdrawn " + a + " shiftycoin from your business.");
+                    }
+                    else
+                    {
+                        await ReplyAsync("your business does not have enough shiftycoin.");
+                    }
+                }
+                else
+                {
+                    await ReplyAsync("either this business does not exist, or you do not own it.");
+                }
+            }
+        }
     }
 }
