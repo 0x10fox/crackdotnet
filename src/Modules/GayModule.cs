@@ -6,7 +6,6 @@ using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using Newtonsoft.Json.Linq;
-//using static crackdotnet.CommandHandler;
 
 namespace crackdotnet.Modules
 {
