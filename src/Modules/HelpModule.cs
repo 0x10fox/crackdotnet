@@ -23,8 +23,8 @@ namespace crackdotnet.Modules
             string prefix = _config["prefix"];
             var builder = new EmbedBuilder()
             {
-                Color = new Color(114, 137, 218),
-                Description = "these are the commands you can use"
+                Color = new Color(185, 76, 225),
+                Description = "these are the commands you can use \n you can execute a command by mentioning the bot, followed by your command."
             };
             
             foreach (var module in _service.Modules)
@@ -65,7 +65,7 @@ namespace crackdotnet.Modules
             string prefix = _config["prefix"];
             var builder = new EmbedBuilder()
             {
-                Color = new Color(114, 137, 218),
+                Color = new Color(185, 76, 225),
                 Description = $"aight here commands that match **{command}**"
             };
 

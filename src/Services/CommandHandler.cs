@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System.Text;
 using System.IO;
 using Newtonsoft.Json.Linq;
+using Discord;
 
 namespace crackdotnet
 {
@@ -48,8 +49,20 @@ namespace crackdotnet
             {
                 if (msg.Author.Id != _discord.CurrentUser.Id)
                 {
+                    //string message = msg.Content;
+                    
                     var result = await _commandService.ExecuteAsync(context, argPos, _serviceProvider);
-                    if (!result.IsSuccess) Console.WriteLine("sommen fuked");
+                    if (!result.IsSuccess)
+                    {
+                        if (result.ErrorReason != "Unknown command.")
+                        {
+                            await context.Channel.SendMessageAsync(result.ErrorReason);
+                            Console.WriteLine("sommen fuked");
+                        }
+                        
+                        var noEmoji = new Emoji("\U0001F6AB");
+                        await s.AddReactionAsync(noEmoji);
+                    }
                     if (result.IsSuccess) return;
 
                     switch (result)

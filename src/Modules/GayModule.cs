@@ -23,7 +23,13 @@ namespace crackdotnet.Modules
                 string scjson = System.IO.File.ReadAllText(@"C:\Users\sdani\OneDrive\Documents\crackdotnet\src\shiftycoins.json");
                 JObject parsed = JObject.Parse(scjson);
                 JObject users = (JObject)parsed["users"];
-                await ReplyAsync("you have " + users[id] + " shiftycoin");
+                string msgToSend = ("you have " + users[id] + " shiftycoin");
+                var builder = new EmbedBuilder()
+                {
+                    Color = new Color(185, 76, 225),
+                    Description = msgToSend
+                };
+                await ReplyAsync("", false, builder.Build());
             }
             [Command("totalcoin")]
             [Summary("show the amount of shiftycoin awarded to all users combined")]
@@ -33,7 +39,13 @@ namespace crackdotnet.Modules
                 JObject parsed = JObject.Parse(scjson);
                 JObject users = (JObject)parsed["users"];
                 JObject totalareas = (JObject)parsed["totalareas"];
-                await ReplyAsync("there are " + totalareas["totalcoin"] + " shiftycoin in circulation");
+                string msgToSend = ("there are " + totalareas["totalcoin"] + " shiftycoin in circulation");
+                var builder = new EmbedBuilder()
+                {
+                    Color = new Color(185, 76, 225),
+                    Description = msgToSend
+                };
+                await ReplyAsync("", false, builder.Build());
             }
             [Command("pay")]
             [Summary("pay a user")]
@@ -58,19 +70,31 @@ namespace crackdotnet.Modules
                         users[id2] = ((int)users[id2]) + a;
                         System.IO.File.WriteAllText(@"C:\Users\sdani\OneDrive\Documents\crackdotnet\src\shiftycoins.json", parsed.ToString());
                     }
-                    await ReplyAsync("you have paid " + user.Mention + " " + a + " shiftycoin.");
+                    string msgToSend = ("you have paid " + user.Mention + " " + a + " shiftycoin.");
+                    var builder = new EmbedBuilder()
+                    {
+                        Color = new Color(185, 76, 225),
+                        Description = msgToSend
+                    };
+                    await ReplyAsync("", false, builder.Build());
                 }
                 else
                 {
-                    await ReplyAsync("you dont have enough coin");
+                    string msgToSend = ("you dont have enough coin");
+                    var builder = new EmbedBuilder()
+                    {
+                        Color = new Color(185, 76, 225),
+                        Description = msgToSend
+                    };
+                    await ReplyAsync("", false, builder.Build());
                 }
                 
 
             }
 
-            [Command("payid")]
-            [Summary("pay a user via their id")]
-            public async Task Command_PayIdAsync(int a, string id2)
+            [Command("pay")]
+            [Summary("pay a user")]
+            public async Task Command_PayAsync(int a, string id2)
             {
                 string id1 = Context.Message.Author.Id.ToString();
                 //string id2 = user.Id.ToString();
@@ -82,7 +106,13 @@ namespace crackdotnet.Modules
                     
                     if (!scjson.Contains(id2))
                     {
-                        await ReplyAsync("user not registered");
+                        string msgToSendd = ("user not registered");
+                        var builderr = new EmbedBuilder()
+                        {
+                            Color = new Color(185, 76, 225),
+                            Description = msgToSendd
+                        };
+                        await ReplyAsync("", false, builderr.Build());
                     }
                     else
                     {
@@ -93,9 +123,21 @@ namespace crackdotnet.Modules
                 }
                 else
                 {
-                    await ReplyAsync("you dont have enough coin");
+                    string msgToSendd = ("you dont have enough coin");
+                    var builderr = new EmbedBuilder()
+                    {
+                        Color = new Color(185, 76, 225),
+                        Description = msgToSendd
+                    };
+                    await ReplyAsync("", false, builderr.Build());
                 }
-                await ReplyAsync("you have paid the user " + a + " shiftycoin.");
+                string msgToSend = ("you have paid the user " + a + " shiftycoin.");
+                var builder = new EmbedBuilder()
+                {
+                    Color = new Color(185, 76, 225),
+                    Description = msgToSend
+                };
+                await ReplyAsync("", false, builder.Build());
 
             }
             [Command("useramount")]
@@ -106,7 +148,13 @@ namespace crackdotnet.Modules
                 string scjson = System.IO.File.ReadAllText(@"C:\Users\sdani\OneDrive\Documents\crackdotnet\src\shiftycoins.json");
                 JObject parsed = JObject.Parse(scjson);
                 JObject users = (JObject)parsed["users"];
-                await ReplyAsync("this person has " + users[a] + " shiftycoin");
+                string msgToSend = ("this person has " + users[a] + " shiftycoin");
+                var builder = new EmbedBuilder()
+                {
+                    Color = new Color(185, 76, 225),
+                    Description = msgToSend
+                };
+                await ReplyAsync("", false, builder.Build());
             }
         }
         [Group("business"), Name("business")]
@@ -125,7 +173,13 @@ namespace crackdotnet.Modules
                 JObject business = (JObject)parsed1["business"];
                 if (bujson.Contains(newid.ToUpper()))
                 {
-                    await ReplyAsync("the business " + newid.ToUpper() + " already exists.");
+                    string msgToSend = ("the business " + newid.ToUpper() + " already exists.");
+                    var builder = new EmbedBuilder()
+                    {
+                        Color = new Color(185, 76, 225),
+                        Description = msgToSend
+                    };
+                    await ReplyAsync("", false, builder.Build());
 
                 }
                 else
@@ -134,7 +188,13 @@ namespace crackdotnet.Modules
                     business.Property("start").AddAfterSelf(new JProperty(newid.ToUpper(), 0));
                     System.IO.File.WriteAllText(@"C:\Users\sdani\OneDrive\Documents\crackdotnet\src\business.json", parsed.ToString());
                     System.IO.File.WriteAllText(@"C:\Users\sdani\OneDrive\Documents\crackdotnet\src\shiftycoins.json", parsed1.ToString());
-                    await ReplyAsync("the business " + newid.ToUpper() + " has been created.");
+                    string msgToSend = ("the business " + newid.ToUpper() + " has been created.");
+                    var builder = new EmbedBuilder()
+                    {
+                        Color = new Color(185, 76, 225),
+                        Description = msgToSend
+                    };
+                    await ReplyAsync("", false, builder.Build());
                     Console.WriteLine("new business added, " + newid.ToUpper());
                 }
             }
@@ -152,20 +212,38 @@ namespace crackdotnet.Modules
                     
                     if (!scjson.Contains(id2.ToUpper()))
                     {
-                        await ReplyAsync("the business " + id2.ToUpper() + " does not exist.");
+                        string msgToSend = ("the business " + id2.ToUpper() + " does not exist.");
+                        var builder = new EmbedBuilder()
+                        {
+                            Color = new Color(185, 76, 225),
+                            Description = msgToSend
+                        };
+                        await ReplyAsync("", false, builder.Build());
                     }
                     else
                     {
                         users[id1] = ((int)users[id1]) - a;
                         business[id2.ToUpper()] = ((int)business[id2.ToUpper()]) + a;
                         System.IO.File.WriteAllText(@"C:\Users\sdani\OneDrive\Documents\crackdotnet\src\shiftycoins.json", parsed.ToString());
-                        await ReplyAsync("you have paid " + id2.ToUpper() + " " + a + " shiftycoin.");
+                        string msgToSend = ("you have paid " + id2.ToUpper() + " " + a + " shiftycoin.");
+                        var builder = new EmbedBuilder()
+                        {
+                            Color = new Color(185, 76, 225),
+                            Description = msgToSend
+                        };
+                        await ReplyAsync("", false, builder.Build());
                     }
                     
                 }
                 else
                 {
-                    await ReplyAsync("you dont have enough coin");
+                    string msgToSend = ("you dont have enough coin");
+                    var builder = new EmbedBuilder()
+                    {
+                        Color = new Color(185, 76, 225),
+                        Description = msgToSend
+                    };
+                    await ReplyAsync("", false, builder.Build());
                 }
             }
             [Command("balance")]
@@ -176,7 +254,13 @@ namespace crackdotnet.Modules
                 string scjson = System.IO.File.ReadAllText(@"C:\Users\sdani\OneDrive\Documents\crackdotnet\src\shiftycoins.json");
                 JObject parsed = JObject.Parse(scjson);
                 JObject business = (JObject)parsed["business"];
-                await ReplyAsync("this business has " + (int)business[a.ToUpper()] + " shiftycoin");
+                string msgToSend = ("this business has " + (int)business[a.ToUpper()] + " shiftycoin");
+                var builder = new EmbedBuilder()
+                {
+                    Color = new Color(185, 76, 225),
+                    Description = msgToSend
+                };
+                await ReplyAsync("", false, builder.Build());
             }
             [Command("withdraw")]
             [Summary("withdraw an amount from a business you own. must be registered as business owner.")]
@@ -198,16 +282,34 @@ namespace crackdotnet.Modules
                         users[id] = ((int)users[id]) + a;
                         business[busid.ToUpper()] = ((int)business[busid.ToUpper()]) - a;
                         System.IO.File.WriteAllText(@"C:\Users\sdani\OneDrive\Documents\crackdotnet\src\shiftycoins.json", parsed1.ToString());
-                        await ReplyAsync("you have withdrawn " + a + " shiftycoin from your business.");
+                        string msgToSend = ("you have withdrawn " + a + " shiftycoin from your business.");
+                        var builder = new EmbedBuilder()
+                        {
+                            Color = new Color(185, 76, 225),
+                            Description = msgToSend
+                        };
+                        await ReplyAsync("", false, builder.Build());
                     }
                     else
                     {
-                        await ReplyAsync("your business does not have enough shiftycoin.");
+                        string msgToSend = ("your business does not have enough shiftycoin.");
+                        var builder = new EmbedBuilder()
+                        {
+                            Color = new Color(185, 76, 225),
+                            Description = msgToSend
+                        };
+                        await ReplyAsync("", false, builder.Build());
                     }
                 }
                 else
                 {
-                    await ReplyAsync("either this business does not exist, or you do not own it.");
+                    string msgToSend = ("either this business does not exist, or you do not own it.");
+                    var builder = new EmbedBuilder()
+                    {
+                        Color = new Color(185, 76, 225),
+                        Description = msgToSend
+                    };
+                    await ReplyAsync("", false, builder.Build());
                 }
             }
         }
